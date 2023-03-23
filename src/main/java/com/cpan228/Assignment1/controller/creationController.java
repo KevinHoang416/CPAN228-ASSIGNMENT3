@@ -48,6 +48,7 @@ public class creationController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_WAREHOUSE_EMPLOYEE')")
     public String processItemAddition(@Valid Item item, BindingResult result) {
         if (result.hasErrors()) {
             return "creation";
@@ -57,7 +58,14 @@ public class creationController {
         return "redirect:/itemlist";
     }
 
-    @PostMapping("/deleteAllFighters")
+    @PostMapping("/deleteItem")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String processItemDeletion(Long itemId) {
+        log.info("Deleting item with id: {}", itemId);
+        itemRepository.deleteById(itemId);
+        return "redirect:/itemlist";
+    }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String processFightersDeletion(@AuthenticationPrincipal User user) {
         log.info("Deleting all fighters for user: {}", user.getAuthorities());

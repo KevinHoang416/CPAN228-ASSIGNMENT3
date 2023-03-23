@@ -30,12 +30,16 @@ public class User implements UserDetails {
 
     private String username;
     private String password;
+    private String role; // added role field
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (username.equals("admin"))
-            return List.of(new SimpleGrantedAuthority("ROLE_USER"), new SimpleGrantedAuthority("ROLE_ADMIN"));
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        if (role.equals("admin")) // check for admin role
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        else if (role.equals("warehouse")) // check for warehouse employee role
+            return List.of(new SimpleGrantedAuthority("ROLE_WAREHOUSE"), new SimpleGrantedAuthority("ROLE_USER"));
+        else // for regular user role
+            return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     @Override
