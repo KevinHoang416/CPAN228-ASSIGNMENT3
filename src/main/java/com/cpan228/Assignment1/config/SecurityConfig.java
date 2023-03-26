@@ -15,10 +15,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import com.cpan228.Assignment1.model.User;
 import com.cpan228.Assignment1.repository.UserRepository;
 
-/**
- * Configuration class for Spring is like a holder of beans. We can use this
- * class to define beans that we want to use in our application.
- */
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfig {
@@ -44,13 +40,13 @@ public class SecurityConfig {
         return http
                 .authorizeHttpRequests()
                 .requestMatchers(toH2Console()).permitAll()
-                .requestMatchers("/design", "/fighterlist")
+                .requestMatchers("/itemlist")
                 .hasRole("USER")
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/design", true)
+                .defaultSuccessUrl("/", true)
                 .and()
                 .logout()
                 .logoutSuccessUrl("/")
